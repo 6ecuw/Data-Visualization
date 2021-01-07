@@ -1,0 +1,34 @@
+{
+  "name": "Data-Visualization",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -c -w",
+    "dev": "npm-run-all --parallel start watch",
+    "start": "serve public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/6ecuw/Data-Visualization.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/6ecuw/Data-Visualization/issues"
+  },
+  "homepage": "https://github.com/6ecuw/Data-Visualization#readme",
+  "dependencies": {
+    "d3": "^6.3.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^17.0.0",
+    "@rollup/plugin-node-resolve": "^11.0.1",
+    "npm-run-all": "^4.1.5",
+    "rollup": "^2.36.1",
+    "rollup-plugin-terser": "^7.0.2",
+    "serve": "^11.3.2"
+  }
+}
