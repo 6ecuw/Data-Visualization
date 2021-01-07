@@ -2,6 +2,7 @@ import {
   axisBottom,
   axisLeft,
   csv,
+  format,
   max,
   scaleBand,
   scaleLinear,
@@ -18,7 +19,7 @@ svg.attr('width', width)
 svg.attr('height', height)
 
 const render = (data) => {
-  const margin = { top: 20, right: 20, bottom: 30, left: 170 }
+  const margin = { top: 70, right: 20, bottom: 100, left: 170 }
   const innerWidth = width - margin.left - margin.right
   const innerHeight = height - margin.top - margin.bottom
   const xScale = scaleLinear()
@@ -31,11 +32,25 @@ const render = (data) => {
   const g = svg
     .append('g')
     .attr('transform', `translate(${margin.left},${margin.top})`)
+  const xAxisTickFormat = (n) => format('.2s')(n).replace('G', 'B')
+  const xAxis = axisBottom(xScale)
+    .tickFormat(xAxisTickFormat)
+    .tickSize(-innerHeight)
 
-  g.append('g').call(axisLeft(yScale))
-  g.append('g')
-    .call(axisBottom(xScale))
+  g.append('g').call(axisLeft(yScale)).selectAll('.domain, .tick line').remove()
+  const xAxisG = g
+    .append('g')
+    .call(xAxis)
     .attr('transform', `translate(0,${innerHeight})`)
+
+  xAxisG.select('.domain').remove()
+  xAxisG
+    .append('text')
+    .attr('y', 75)
+    .attr('x', innerWidth / 2)
+    .attr('fill', 'black')
+    .attr('text-anchor', 'middle')
+    .text(`Population`)
 
   g.selectAll('rect')
     .data(data)
@@ -44,7 +59,13 @@ const render = (data) => {
     .attr('y', ([d]) => yScale(d))
     .attr('width', ([_, d]) => xScale(d))
     .attr('height', yScale.bandwidth())
-    .attr('fill', (country, i) => `hsl(${120 + (i * 180) / limit}, 50%, 50%)`)
+    .attr('fill', (_, i) => `hsl(${120 + (i * 180) / limit}, 50%, 50%)`)
+
+  g.append('text')
+    .attr('y', -15)
+    .attr('x', innerWidth / 2)
+    .attr('text-anchor', 'middle')
+    .text(`Top ${limit} Most Populous Countries`)
 }
 
 csv('datasets/PopulationByCountry2020.csv').then((countries) => {
