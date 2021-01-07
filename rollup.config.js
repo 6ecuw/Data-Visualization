@@ -1,5 +1,6 @@
 import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
+import css from "rollup-plugin-css-only";
 import { terser } from "rollup-plugin-terser";
 
 const production = !process.env.ROLLUP_WATCH;
@@ -11,5 +12,10 @@ export default {
     format: "iife",
     sourcemap: !production,
   },
-  plugins: [resolve(), commonjs(), production && terser()],
+  plugins: [
+    css({ output: "bundle.css" }),
+    resolve(),
+    commonjs(),
+    production && terser(),
+  ],
 };
